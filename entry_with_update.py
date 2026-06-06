@@ -43,4 +43,9 @@ except Exception as e:
     print(str(e))
 
 print('Update succeeded.')
+
+# Evitamos que launch.py intente instalar dependencias por su cuenta
+if "--skip-pip" not in sys.argv:
+    sys.argv.append("--skip-pip")
+    
 from launch import *
