@@ -44,8 +44,14 @@ except Exception as e:
 
 print('Update succeeded.')
 
-# Evitamos que launch.py intente instalar dependencias por su cuenta
-if "--skip-pip" not in sys.argv:
-    sys.argv.append("--skip-pip")
+# Desactivar por completo el instalador interno de Fooocus/launch.py
+import os
+os.environ["FOOOCUS_BUTTON_RELEASE"] = "1" 
+# O directamente vaciamos los argumentos de instalación interna inyectando un bypass:
+sys.argv.append("--skip-pip") if hasattr(sys, 'argv') else None
+
+# Fuerza a que el script no valide versiones de transformers en caliente
+import launch
+launch.run_pip = lambda *args, **kwargs: None
     
 from launch import *
