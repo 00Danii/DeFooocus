@@ -44,14 +44,13 @@ except Exception as e:
 
 print('Update succeeded.')
 
-# Desactivar por completo el instalador interno de Fooocus/launch.py
+# 1. Engañamos al entorno para que crea que es una versión empaquetada fija
 import os
-os.environ["FOOOCUS_BUTTON_RELEASE"] = "1" 
-# O directamente vaciamos los argumentos de instalación interna inyectando un bypass:
-sys.argv.append("--skip-pip") if hasattr(sys, 'argv') else None
+os.environ["FOOOCUS_BUTTON_RELEASE"] = "1"
 
-# Fuerza a que el script no valide versiones de transformers en caliente
+# 2. Importamos launch y anulamos por completo su capacidad de llamar a pip
 import launch
 launch.run_pip = lambda *args, **kwargs: None
+launch.is_installed = lambda *args, **kwargs: True
     
 from launch import *
